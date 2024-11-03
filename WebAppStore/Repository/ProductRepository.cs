@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebAppStore.Data;
+using WebAppStore.DTO;
 using WebAppStore.Interfaces;
 using WebAppStore.Models;
 using WebAppStore.ViewModels;
@@ -35,7 +36,7 @@ namespace WebAppStore.Repository
             return (ProductDetailsVM);
         }
 
-        public async void Insert(AddProductVM item)
+        public async void Insert(AddProductDTO item)
         {
             // Create and save the product
             var product = new Product
@@ -47,39 +48,39 @@ namespace WebAppStore.Repository
             };
             db.Products.Add(product);
             db.SaveChanges();
-            if (item.Files != null && item.Files.Any())
-            {
-                foreach (var file in item.Files)
-                {
-                    if (file != null && file.Length > 0)
-                    {
-                        // Generate a unique file name to prevent overwriting
-                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                        var filePath = Path.Combine("/images/products", uniqueFileName);
-                        var filePathfolder = Path.Combine("wwwroot/images/products", uniqueFileName);
+            //if (item.Files != null && item.Files.Any())
+            //{
+            //    foreach (var file in item.Files)
+            //    {
+            //        if (file != null && file.Length > 0)
+            //        {
+            //            // Generate a unique file name to prevent overwriting
+            //            var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+            //            var filePath = Path.Combine("/images/products", uniqueFileName);
+            //            var filePathfolder = Path.Combine("wwwroot/images/products", uniqueFileName);
 
-                        // Save the file to the specified path
-                        using (var stream = new FileStream(filePathfolder, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
+            //            // Save the file to the specified path
+            //            using (var stream = new FileStream(filePathfolder, FileMode.Create))
+            //            {
+            //                await file.CopyToAsync(stream);
+            //            }
 
-                        // Add image information to the database
-                        var productImage = new ProductImage
-                        {
-                            Path = filePath,
-                            ProductId = product.Id
-                        };
+            //            // Add image information to the database
+            //            var productImage = new ProductImage
+            //            {
+            //                Path = filePath,
+            //                ProductId = product.Id
+            //            };
 
-                        db.ProductImages.Add(productImage);
-                    }
-                }
+            //            db.ProductImages.Add(productImage);
+            //        }
+            //    }
 
-                db.SaveChanges();
-            }
+            //    db.SaveChanges();
+            //}
         }
 
-        public void Edit(int id, AddProductVM item)
+        public void Edit(int id, AddProductDTO item)
         {
             
             productDetailsVM = GetById(id);

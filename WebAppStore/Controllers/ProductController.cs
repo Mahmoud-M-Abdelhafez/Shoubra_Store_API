@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAppStore.DTO;
 using WebAppStore.Interfaces;
 using WebAppStore.ViewModels;
 
@@ -25,17 +26,43 @@ namespace WebAppStore.Controllers
             return Ok(ProductRepository.GetAll());
         }
         [HttpPost]
-        public IActionResult Add([FromBody]AddProductVM model)
+        public IActionResult Add( AddProductDTO model)
         {
             if (ModelState.IsValid) 
             {
                 ProductRepository.Insert(model);
-                return Created();
+                return Ok("Product Added  successfully!");
             }
             return BadRequest(ModelState);
 
            
         }
+        [HttpGet("{searchTerm}")]
+        public IActionResult Search(string searchTerm)
+        {
+
+            // Retrieve filtered products from the repository
+            var filteredProducts = ProductRepository.search(searchTerm);
+
+            // Pass the filtered products to the Index view
+            return Ok(filteredProducts);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, AddProductDTO item)
+        {
+            ProductRepository.Edit(id, item);
+            return Ok("Product updated  successfully!");
+        
+        }
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            ProductRepository.Delete(id);
+            return Ok("Product deleted  successfully!");
+
+        }
+
 
     }
 }
