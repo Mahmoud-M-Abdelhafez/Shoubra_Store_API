@@ -1,4 +1,5 @@
 ﻿using WebAppStore.Data;
+using WebAppStore.DTO;
 using WebAppStore.Interfaces;
 using WebAppStore.Models;
 using WebAppStore.ViewModels;
@@ -44,7 +45,7 @@ namespace WebAppStore.Repository
         }
 
 
-        public void Edit(int id, Category Ct)
+        public void Edit(int id, CategoryDTO Ct)
         {
             CategoryDetailsVM cat = new CategoryDetailsVM();
             cat = GetById(id);

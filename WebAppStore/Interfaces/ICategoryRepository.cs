@@ -1,4 +1,5 @@
-﻿using WebAppStore.Models;
+﻿using WebAppStore.DTO;
+using WebAppStore.Models;
 using WebAppStore.ViewModels;
 
 namespace WebAppStore.Interfaces
@@ -8,7 +9,7 @@ namespace WebAppStore.Interfaces
         List<Category> GetAll();
         CategoryDetailsVM GetById(int id);
         void Insert(AddCategoryVM item);
-        void Edit(int id, Category item);
+        void Edit(int id, CategoryDTO item);
         void Delete(int id);
     }
 }

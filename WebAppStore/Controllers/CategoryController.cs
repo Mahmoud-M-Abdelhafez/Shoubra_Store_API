@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAppStore.DTO;
 using WebAppStore.Interfaces;
 using WebAppStore.ViewModels;
 
@@ -24,6 +25,21 @@ namespace WebAppStore.Controllers
 
             return Ok(CategoryRepository.GetAll());
         }
+
+        [HttpGet("Details/{id}")]
+        public IActionResult Details(int id) 
+        {
+            CategoryDetailsVM categoryDetailsVM = new CategoryDetailsVM();
+
+            categoryDetailsVM = CategoryRepository.GetById(id);
+            if (categoryDetailsVM.category == null)
+            {
+                return BadRequest("Error !!! -- Please Enter The Correct ID");
+            }
+            return Ok(categoryDetailsVM);
+        }
+
+
         [HttpPost]
         public IActionResult Save(AddCategoryVM model)
         {
@@ -44,6 +60,35 @@ namespace WebAppStore.Controllers
                 ModelState.AddModelError("", "An error occurred while saving the category. Please try again.");
                 return BadRequest(ModelState);
             }
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Edit(int id , CategoryDTO Cat)
+        { 
+            
+           
+            CategoryRepository.Edit(id, Cat);
+            if (Cat == null)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            CategoryDetailsVM categoryDetailsVM = new CategoryDetailsVM();
+
+            categoryDetailsVM = CategoryRepository.GetById(id);
+            if (categoryDetailsVM.category == null)
+            {
+                return BadRequest("Error !!! -- Please Enter The Correct ID");
+            }
+            CategoryRepository.Delete(id);
+            
+
+            return Ok("Deleted Successfully!!");
+
         }
 
 
