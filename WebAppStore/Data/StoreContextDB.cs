@@ -24,7 +24,7 @@ namespace WebAppStore.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            optionsBuilder.UseSqlServer("Server=dell-Mahmoud;  Database=Store_DB;  Trusted_Connection=True; Encrypt=False;");
+            optionsBuilder.UseSqlServer("Server=dell-Mahmoud;  Database=Store_DB_API;  Trusted_Connection=True; Encrypt=False;");
 
             base.OnConfiguring(optionsBuilder);
         }

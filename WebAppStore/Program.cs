@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 using WebAppStore.Data;
 using WebAppStore.Interfaces;
 using WebAppStore.Models;
@@ -17,7 +21,49 @@ namespace WebAppStore
             var connectionString = builder.Configuration.GetConnectionString("default");
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+
+            //builder.Services.AddSwaggerGen();
+            #region Swagger Setting
+            builder.Services.AddSwaggerGen(swagger =>
+            {
+                //This is to generate the Default UI of Swagger Documentation    
+                swagger.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "ASP.NET 8 Web API",
+                    Description = " ITI Project"
+                });
+                // To Enable authorization using Swagger (JWT)    
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+                });
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                    new OpenApiSecurityScheme
+                    {
+                    Reference = new OpenApiReference
+                    {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                    }
+                    },
+                    new string[] {}
+                    }
+                    });
+            });
+            #endregion
+
+
+
             builder.Services.AddDbContext<StoreContextDB>
                 (
                 options => options.UseSqlServer(connectionString)
@@ -33,6 +79,41 @@ namespace WebAppStore
                 }).AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<StoreContextDB>().AddDefaultTokenProviders();
 
+
+            // instead of look to Cookies ---- look to JWT 
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                //[Authrize] if found it -- it return unAuthorize 
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            { //Verified Key
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["JWT:IssuerIP"],
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JWT:AudienceIP"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecurityKey"]))
+                };
+
+
+
+            });
+
+
+            builder.Services.AddCors(corsOptions =>
+            {
+                corsOptions.AddPolicy("MyPolicy", corsPolicybuilder =>
+                {
+                    corsPolicybuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
+
             //Custom Service --REgister
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -41,21 +122,18 @@ namespace WebAppStore
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
-            app.UseStaticFiles();
-
-            app.UseRouting();
+            app.UseCors("MyPolicy"); // Control open or block for any consumer 
 
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=home}/{action=start}/{ id?}");
+            app.MapControllers();
 
-            using(var scope = app.Services.CreateScope() )
+            using (var scope = app.Services.CreateScope() )
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var roles = new[] {"Admin","User" };
