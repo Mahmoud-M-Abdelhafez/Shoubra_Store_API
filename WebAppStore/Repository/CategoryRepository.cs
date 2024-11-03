@@ -31,7 +31,7 @@ namespace WebAppStore.Repository
 
 
 
-        public void Insert(AddCategoryVM item)
+        public void Insert(CategoryDTO item)
         {
             var cat = new Category
             {

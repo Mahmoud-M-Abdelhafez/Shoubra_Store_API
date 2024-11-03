@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAppStore.DTO;
 using WebAppStore.Interfaces;
@@ -25,7 +26,18 @@ namespace WebAppStore.Controllers
 
             return Ok(ProductRepository.GetAll());
         }
+        [HttpGet("{searchTerm}")]
+        public IActionResult Search(string searchTerm)
+        {
+
+            // Retrieve filtered products from the repository
+            var filteredProducts = ProductRepository.search(searchTerm);
+
+            // Pass the filtered products to the Index view
+            return Ok(filteredProducts);
+        }
         [HttpPost]
+        [Authorize]
         public IActionResult Add( AddProductDTO model)
         {
             if (ModelState.IsValid) 
@@ -37,18 +49,11 @@ namespace WebAppStore.Controllers
 
            
         }
-        [HttpGet("{searchTerm}")]
-        public IActionResult Search(string searchTerm)
-        {
+       
 
-            // Retrieve filtered products from the repository
-            var filteredProducts = ProductRepository.search(searchTerm);
-
-            // Pass the filtered products to the Index view
-            return Ok(filteredProducts);
-        }
 
         [HttpPut("{id}")]
+        [Authorize]
         public IActionResult Update(int id, AddProductDTO item)
         {
             ProductRepository.Edit(id, item);
@@ -56,6 +61,7 @@ namespace WebAppStore.Controllers
         
         }
         [HttpDelete("{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             ProductRepository.Delete(id);

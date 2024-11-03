@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAppStore.DTO;
 using WebAppStore.Interfaces;
@@ -41,7 +42,8 @@ namespace WebAppStore.Controllers
 
 
         [HttpPost]
-        public IActionResult Save(AddCategoryVM model)
+        [Authorize]
+        public IActionResult Add(CategoryDTO model)
         {
             if (!ModelState.IsValid)
             {
@@ -63,6 +65,7 @@ namespace WebAppStore.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public IActionResult Edit(int id , CategoryDTO Cat)
         { 
             
@@ -75,6 +78,7 @@ namespace WebAppStore.Controllers
             return Ok();
         }
         [HttpDelete("{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             CategoryDetailsVM categoryDetailsVM = new CategoryDetailsVM();

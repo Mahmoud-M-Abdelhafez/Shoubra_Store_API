@@ -8,7 +8,7 @@ namespace WebAppStore.Interfaces
     {
         List<Category> GetAll();
         CategoryDetailsVM GetById(int id);
-        void Insert(AddCategoryVM item);
+        void Insert(CategoryDTO item);
         void Edit(int id, CategoryDTO item);
         void Delete(int id);
     }

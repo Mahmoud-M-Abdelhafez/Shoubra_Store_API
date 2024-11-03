@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace WebAppStore.Models
 {
@@ -14,8 +15,9 @@ namespace WebAppStore.Models
         public int CategoryId { get; set; }
 
         //Navigation Properties
+        [JsonIgnore]
         public virtual Category? catID { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<ProductImage> Images { get; set; } = new HashSet<ProductImage>();
 
     }
