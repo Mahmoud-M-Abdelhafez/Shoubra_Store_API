@@ -1,0 +1,135 @@
+﻿@using WebAppStore.ViewModels
+@model RegisterVM 
+@{
+    ViewData["Title"] = "Register Page";
+}
+
+
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<style>
+    body {
+        background: -webkit-linear-gradient(left, #db1102, #8f0e04);
+    }
+
+    .contact-form {
+        background: #fff;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        width: 100%;
+    }
+
+        .contact-form .form-control {
+            border-radius: 1rem;
+        }
+
+    .contact-image {
+        text-align: center;
+    }
+
+        .contact-image img {
+            border-radius: 6rem;
+            width: 11%;
+            margin-top: -3%;
+            transform: rotate(29deg);
+        }
+
+    .contact-form form {
+        padding: 5%;
+    }
+
+        .contact-form form .row {
+            margin-bottom: 1%;
+        }
+
+
+    .contact-form .btnContact {
+        text-align: center;
+        width: 50%;
+        margin-top: 5px;
+        border: none;
+        border-radius: 1rem;
+        padding: 1.5%;
+        background: #06b300;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+</style>
+<div class="container contact-form">
+    <div style="text-align:center;">
+        <i style="font-size:80px; color:blue; display:block;" class="bi bi-person-fill-add"></i>
+
+        <h3 style="font-size:30px; color:blue; margin-top:10px; margin-bottom:0;">Sign up</h3>
+    </div>
+    <form asp-action="Register" method="post" enctype="multipart/form-data">
+
+        <div class="row d-flex justify-content-center">
+
+            <div class="col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control form-control-lg" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control form-control-lg" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control form-control-lg" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-control form-control-lg" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Address"></label>
+                    <textarea asp-for="Address" class="form-control form-control-lg" rows="2"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProfilePicture"></label>
+                    <input asp-for="ProfilePicture" class="form-control form-control-lg" type="file" name="ProfilePicture" />
+                </div>
+
+                <div class="form-group" style="text-align:center;">
+                    <input type="submit" name="btnSubmit" class="btnContact" value="Sign Up" />
+                </div>
+                <p class="mb-5 pb-lg-2">
+                    have an account?
+                    <a asp-action="Login" style="color:blue;">Login</a>
+                </p>
+            </div>
+
+
+
+        </div>
+
+
+
+    </form>
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

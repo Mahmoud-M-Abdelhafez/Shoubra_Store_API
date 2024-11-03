@@ -1,0 +1,103 @@
+﻿@using WebAppStore.ViewModels
+@model AppUser
+@{
+    ViewData["Title"] = "Add Review Page";
+}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<style>
+    body {
+        background: -webkit-linear-gradient(left, #db1102, #8f0e04);
+    }
+
+    .contact-form {
+        background: #fff;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        width: 100%;
+    }
+
+        .contact-form .form-control {
+            border-radius: 1rem;
+        }
+
+    .contact-image {
+        text-align: center;
+    }
+
+        .contact-image img {
+            border-radius: 6rem;
+            width: 11%;
+            margin-top: -3%;
+            transform: rotate(29deg);
+        }
+
+    .contact-form form {
+        padding: 5%;
+    }
+
+        .contact-form form .row {
+            margin-bottom: 1%;
+        }
+
+
+    .contact-form .btnContact {
+        text-align: center;
+        width: 20%;
+        margin-top: 5px;
+        border: none;
+        border-radius: 1rem;
+        padding: 1.5%;
+        background: #06b300;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        font-size: 20px;
+    }
+</style>
+<div class="container contact-form">
+    <div style="text-align:center;">
+        <i style="font-size:80px; color:yellow; display:block;" class="bi bi-star-fill"></i>
+
+        <h3 style="font-size:30px; color:blue; margin-top:10px; margin-bottom:0;">Add Review</h3>
+    </div>
+    <form action="/Review/Save" method="post">
+
+        <div class="row justify-content-center" style="text-align:center;">
+            <div class="col-md-6" >
+                
+
+           
+
+                <div class="form-group">
+                    <label class="label" for="Star">Select Stars *  </label>
+                    <select class="form-control" id="Star" name="stars"   required>
+
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                       
+                        
+
+                    </select>
+
+                </div>
+            <div class="form-group">
+                <label class="label" for="Description">Description *</label>
+                    <textarea type="text" name="Description" class="form-control" id="Description" value=""></textarea>
+               
+            </div>
+                <input name="UserId"  value="@Model.Id" class="form-control form-control-lg" hidden />
+
+            </div>
+
+        </div>
+        <div class="form-group" style="text-align:center;">
+            <input type="submit" name="btnSubmit" class="btnContact" value="Add" />
+        </div>
+    </form>
+</div>

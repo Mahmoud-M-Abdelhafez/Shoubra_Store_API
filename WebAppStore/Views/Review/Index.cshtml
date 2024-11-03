@@ -1,0 +1,116 @@
+﻿@model List<Review>
+@{
+   
+    bool isAdmin = User.IsInRole("Admin");
+    List<AppUser> Users= ViewBag.Users;
+}
+
+<body class="testimonials-page">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" style="background-color:yellow; color:black; font-size:20px; text-align:center;">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title light-background">
+            <div class="container d-lg-flex justify-content-between align-items-center">
+                <h1 class="mb-2 mb-lg-0">Reviews</h1>
+
+            </div>
+        </div><!-- End Page Title -->
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="testimonials section">
+
+            <div class="container">
+
+                <div class="row gy-4">
+                    
+                    @foreach (var rev in Model)
+                    {
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="testimonial-item">
+                                @foreach (var user in Users)
+                                {
+                                    if(user.Id==rev.UserId)
+                                    {
+                                        
+                                        if (@user.ProfilePicture == null)
+                                        {
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="testimonial-img" alt="Profile Picture">
+                                            }
+                                        else
+                                        {
+                                            <img src="@user.ProfilePicture" class="testimonial-img" alt="Profile Picture">
+                                        }
+                                        <h3>@user.Name</h3>
+                                        <h4>@user.Address</h4>
+                                        @if (isAdmin)
+                                        {
+                                            <div style="float:right;">
+                                                <a class="dropdown-item" asp-controller="Review" asp-action="Edit" asp-route-id="@rev.Id" style="display:inline;"><button class="btn btn-outline-warning"><i style="font-size:30px" class="bi bi-pencil-square"></i></button>
+
+                                            </a>
+
+                                                <a class="dropdown-item" asp-controller="Review" asp-action="Delete" asp-route-id="@rev.Id" style="display:inline;"><button class="btn btn-outline-danger"><i style="font-size:30px" class="bi bi-trash"></i></button>
+
+                                            </a>
+                                            </div>
+                                        }
+                                       
+                                    }
+                                }
+                                <div class="stars">
+                                    @for(int i=0 ; i < rev.stars ;i++)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                    }
+                                    @for (int i = 0; i < (5-rev.stars); i++)
+                                    {
+                                        <i class="bi bi-star"></i>
+                                    }
+                                  
+                                </div>
+                                <p>
+                                    <i class="bi bi-quote quote-icon-left"></i>
+                                    <span>@rev.Description</span>
+                                    <i class="bi bi-quote quote-icon-right"></i>
+                                </p>
+
+                            </div>
+
+                        </div><!-- End testimonial item -->
+                    }
+                </div>
+
+            </div>
+
+        </section><!-- /Testimonials Section -->
+
+    </main>
+
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    
+
+    <!-- Vendor JS Files -->
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="/assets/vendor/waypoints/noframework.waypoints.js"></script>
+    <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+
+</body>

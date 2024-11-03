@@ -1,0 +1,136 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    List<AppUser> Users = ViewBag.Users;
+}
+   @model List<Review>
+
+<style>
+    .carousel-container h2{
+        color:white;
+    }
+
+</style>
+  
+
+<!-- Hero Section -->
+<section id="hero" class="hero section dark-background">
+
+    <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+
+        <div class="carousel-item active">
+            <img src="~/assets/img/hero-carousel/hero-carousel-1.jpg" alt="">
+            <div class="carousel-container">
+                <h2>Welcome to Shoubra Store!</h2>
+                <p> Find great deals on electronics, clothing, and home essentials.</p>
+                    <a href="/Product/Index" class="btn-get-started">Shop Now</a>
+            </div>
+        </div><!-- End Carousel Item -->
+
+        <div class="carousel-item">
+            <img src="~/assets/img/hero-carousel/hero-carousel-2.jpg" alt="">
+            <div class="carousel-container">
+                <h2>Welcome to Shoubra Store!</h2>
+                <p> Enjoy a pleasant shopping experience with us. Visit today and discover more!</p>
+                    <a href="/Product/Index" class="btn-get-started">Shop Now</a>
+            </div>
+        </div><!-- End Carousel Item -->
+
+        <div class="carousel-item">
+            <img src="~/assets/img/hero-carousel/hero-carousel-3.jpg" alt="">
+            <div class="carousel-container">
+                <h2>Welcome to Shoubra Store!</h2>
+                <p>Explore top-quality products at great prices. Shop now for an enjoyable experience!</p>
+                    <a href="/Product/Index" class="btn-get-started">Shop Now</a>
+            </div>
+        </div><!-- End Carousel Item -->
+
+        <a class="carousel-control-prev" href="#hero-carousel" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+        </a>
+
+        <a class="carousel-control-next" href="#hero-carousel" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+        </a>
+
+        <ol class="carousel-indicators">
+            <li data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#hero-carousel" data-bs-slide-to="1"></li>
+            <li data-bs-target="#hero-carousel" data-bs-slide-to="2"></li>
+        </ol>
+
+    </div>
+
+</section><!-- /Hero Section -->
+     
+
+
+
+
+        <!-- Page Title -->
+        <div class="page-title light-background">
+            <div class="container d-lg-flex justify-content-between align-items-center">
+                <h1 class="mb-2 mb-lg-0">Reviews</h1>
+
+            </div>
+        </div><!-- End Page Title -->
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="testimonials section">
+
+            <div class="container">
+
+                <div class="row gy-4">
+
+                    @foreach (var rev in Model)
+                    {
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="testimonial-item">
+                                @foreach (var user in Users)
+                                {
+                                    if (user.Id == rev.UserId)
+                                    {
+
+                                        if (@user.ProfilePicture == null)
+                                        {
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="testimonial-img" alt="Profile Picture">
+                                        }
+                                        else
+                                        {
+                                            <img src="@user.ProfilePicture" class="testimonial-img" alt="Profile Picture">
+                                        }
+                                        <h3>@user.Name</h3>
+                                        <h4>@user.Address</h4>
+
+                                    }
+                                }
+                                <div class="stars">
+                                    @for (int i = 0; i < rev.stars; i++)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                    }
+                                    @for (int i = 0; i < (5 - rev.stars); i++)
+                                    {
+                                        <i class="bi bi-star"></i>
+                                    }
+
+                                </div>
+                                <p>
+                                    <i class="bi bi-quote quote-icon-left"></i>
+                                    <span>@rev.Description</span>
+                                    <i class="bi bi-quote quote-icon-right"></i>
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <!-- End testimonial item -->
+                    }
+                </div>
+
+            </div>
+
+        </section><!-- /Testimonials Section -->
+
+
+
+

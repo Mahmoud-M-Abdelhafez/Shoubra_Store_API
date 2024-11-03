@@ -1,0 +1,132 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using WebAppStore.ViewModels
+@inject UserManager<AppUser> userManager
+
+@{
+
+    ViewData["Title"] = "Details Page";
+    string userId = userManager.GetUserId(User);
+}
+@model ProductDetailsVM
+
+<style>
+    .portfolio-info li {
+        font-size: 30px;
+    }
+
+    .portfolio-info h3 {
+        font-size: 40px;
+    }
+
+    .form-group .btn-buy {
+        background: var(--accent-color);
+        color: var(--contrast-color);
+        display: inline-block;
+        padding: 8px 35px 10px 35px;
+        border-radius: 4px;
+        transition: none;
+        font-size: 14px;
+        font-weight: 400;
+        font-family: var(--heading-font);
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+        .form-group .btn-buy:hover {
+            background: color-mix(in srgb, var(--accent-color), transparent 20%);
+        }
+</style>
+<main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+        <div class="container d-lg-flex justify-content-between align-items-center">
+            <h1 class="mb-2 mb-lg-0">Product Details</h1>
+
+        </div>
+    </div><!-- End Page Title -->
+    <!-- Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details section">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-6">
+                    <div class="portfolio-details-slider swiper init-swiper">
+
+                        <script type="application/json" class="swiper-config">
+                            {
+                              "loop": true,
+                              "speed": 600,
+                              "autoplay": {
+                                "delay": 5000
+                              },
+                              "slidesPerView": "auto",
+                              "pagination": {
+                                "el": ".swiper-pagination",
+                                "type": "bullets",
+                                "clickable": true
+                              }
+                            }
+                        </script>
+
+                        <div class="swiper-wrapper align-items-center">
+
+                            @foreach (var image in Model.productImages)
+                            {
+
+                                <div class="swiper-slide">
+                                    <img src="@image.Path" alt="@Model.product.Name Image" style="width:50%; height:50%;">
+                                </div>
+                            }
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
+                        <h3 style="font-size: 40px;">Product information</h3>
+                        <ul>
+                            <li><strong>Product Name</strong>: &nbsp; @Model.product.Name</li>
+
+                            <li><strong>Category</strong>: &nbsp; @Model.category.Name</li>
+
+
+
+                            <li><strong>Price</strong>:&nbsp; @Model.product.Price $ </li>
+                            <li><strong>Description</strong>:&nbsp; @Model.product.Description</li>
+                        </ul>
+                        <div class="pricing-item featured">
+                            <form action="/cart/save" method="post">
+                                <div class="form-group">
+
+
+                                    <input type="text" name="UserId" value="@userId" hidden />
+                                    <input type="text" name="ProductId" value="@Model.product.Id" hidden />
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="number" name="Qty" value="1" style="width:60px; display:inline; margin-bottom:10px;" />
+                                </div>
+                                <div class="form-group">
+                                    <input class="btn-buy" type="submit" name="submit" value="Add to Cart" />
+                                    <i class="bi bi-cart" style="font-size:40px; margin-bottom:0px; color:black;"></i>
+
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- /Portfolio Details Section -->
+
+</main>

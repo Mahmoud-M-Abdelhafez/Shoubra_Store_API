@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Categories Page";
+    bool isAdmin = User.IsInRole("Admin");
+    bool isUser = User.IsInRole("User");
+}
+@model List<Category>
+<style>
+    .ED a:hover {
+    color:blue;
+    }
+</style>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" style="background-color:yellow; color:black; font-size:20px; text-align:center;">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<section id="services" class="services section">
+
+    <div class="container">
+        <div style="text-align:center; margin:40px;">
+        <h2> Categories </h2>
+            <br />
+                          @if (isAdmin)
+                        {
+        <a href="/Category/Add"><button class="btn btn-success btn-lg">Add Category</button></a>
+                        }
+            
+       
+        </div>
+
+        <div class="row gy-4">
+
+            @foreach (Category item in Model)
+            {
+             
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+
+                      <div class="service-item d-flex position-relative h-100">
+                        <i class="@item.Icon icon flex-shrink-0"></i>
+                             <div style="display:block;">
+                            <a asp-controller="Category" asp-action="Details" asp-route-id="@item.Id"><h4 class="title">@item.Name</h4></a>
+                                <p class="description">@item.Description</p>
+                             </div>
+                        @if (isAdmin)
+                        {
+                            <div class="ED">
+                                <a asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirmDelete();"><i style="font-size:30px" class="bi bi-trash"></i></a>
+                                <a asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id" ><i style="font-size:30px" class="bi bi-pencil-square"></i></a>
+                            </div>
+                        }
+                        @if (isUser)
+                        {
+                            <div style="float:right;">
+                                <a asp-controller="Category" asp-action="Details" asp-route-id="@item.Id" class="btn-buy"><button class="btn btn-danger">Show Products</button></a>
+                            </div>
+                        }
+                    </div>
+              
+                </div>
+
+            }
+           
+
+          
+
+        </div>
+
+    </div>
+
+</section>
+    <script>function confirmDelete() { return confirm("Do you really want to delete this Category?"); }</script>
+
