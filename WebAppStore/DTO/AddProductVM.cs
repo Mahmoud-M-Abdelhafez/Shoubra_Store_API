@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using WebAppStore.Models;
 using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations; // Ensure this is included for IFormFile
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization; // Ensure this is included for IFormFile
 
 namespace WebAppStore.ViewModels
 {
@@ -26,9 +27,10 @@ namespace WebAppStore.ViewModels
         public int CategoryId { get; set; }
 
         // Navigation Properties
+        [JsonIgnore]
         public virtual Category? Category { get; set; }
 
-
+        [JsonIgnore]
         public virtual ICollection<ProductImage> Images { get; set; } = new HashSet<ProductImage>();
     }
 }
