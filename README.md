@@ -1,22 +1,21 @@
-# 🚀 𝗠𝘆 𝗙𝗶𝗿𝘀𝘁 𝗪𝗲𝗯 𝗔𝗽𝗽𝗹𝗶𝗰𝗮𝘁𝗶𝗼𝗻: 𝗦𝗵𝗼𝘂𝗯𝗿𝗮 𝗦𝘁𝗼𝗿𝗲 🚀
+# 🚀 Shoubra Store API 🚀
 
-## 🔑 𝗞𝗲𝘆 𝗙𝗲𝗮𝘁𝘂𝗿𝗲𝘀:
-- 🔒 **Login & Register Pages:** Secure user accounts with advanced authentication and authorization.
-- 🛍️ **Product & Category Pages:** Explore and filter products with detailed views.
-- 🛒 **Shopping Cart:** Easily add, adjust, or remove items.
-- 🗨️ **Review Management:** Add, edit, or delete your reviews.
-- 👤 **Profile Management:** Update your profile picture and personal details.
-- ⚙️ **Admin Dashboard:** Manage products, categories, users, reviews, and roles.
+Shoubra Store is a comprehensive API-based project built with .NET Core 8, designed to deliver a seamless e-commerce experience. It provides a secure platform for user authentication, product browsing, cart management, review handling, and full administrative control via a RESTful API.
 
-## 🔧 𝗧𝗲𝗰𝗵𝗻𝗼𝗹𝗼𝗴𝗶𝗲𝘀 𝗨𝘀𝗲𝗱:
+## 🔑 Key Features
+- **User Authentication & Authorization:** Secured with JWT tokens, allowing role-based access control for users and admins.
+- **Product & Category Endpoints:** Retrieve, filter, and browse products and categories with detailed API responses.
+- **Shopping Cart API:** Manage your cart by adding, updating, and removing items.
+- **Review Management API:** Endpoints for adding, editing, and deleting reviews for products.
+- **User Profile API:** Manage profile information, including profile pictures and personal details.
+- **Admin Management API:** Admin-exclusive endpoints for managing products, categories, users, reviews, and user roles.
+
+## 🔧 Technologies Used
 - .NET Core 8
-- ASP.NET MVC
+- ASP.NET Web API
 - C#
-- Entity Framework
+- Entity Framework Core
 - LINQ
 - SQL Server
-- Authorization & Authentication
+- JWT Authentication & Role-Based Authorization
 
-This project has been an incredible learning experience and a significant milestone in my web development journey. 🚀
-
-I’d love to hear your thoughts and suggestions! 😊
