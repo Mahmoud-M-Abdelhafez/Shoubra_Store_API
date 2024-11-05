@@ -27,6 +27,7 @@ namespace WebAppStore.Controllers
             return Ok(CategoryRepository.GetAll());
         }
 
+       
         [HttpGet("Details/{id}")]
         public IActionResult Details(int id) 
         {
@@ -41,8 +42,9 @@ namespace WebAppStore.Controllers
         }
 
 
+       
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add(CategoryDTO model)
         {
             if (!ModelState.IsValid)
@@ -60,12 +62,14 @@ namespace WebAppStore.Controllers
             {
 
                 ModelState.AddModelError("", "An error occurred while saving the category. Please try again.");
-                return BadRequest(ModelState);
+                return BadRequest(ex.Message);
             }
         }
 
+        
+        
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id , CategoryDTO Cat)
         { 
             
@@ -77,8 +81,11 @@ namespace WebAppStore.Controllers
             }
             return Ok();
         }
+       
+        
+        
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             CategoryDetailsVM categoryDetailsVM = new CategoryDetailsVM();

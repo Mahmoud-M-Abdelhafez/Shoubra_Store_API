@@ -6,18 +6,20 @@ using WebAppStore.ViewModels;
 
 namespace WebAppStore.Controllers
 {
-    [Authorize]
-    public class CartController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CartController : ControllerBase
     {
         private readonly ICartRepository cartRepository;
         public CartController(ICartRepository _CartRepo)
         {
             cartRepository = _CartRepo;
         }
+        [HttpGet("{id}")]
         public IActionResult Index(string id)
         {
             
-            return View(cartRepository.GetAll(id));
+            return Ok(cartRepository.GetAll(id));
         }
         [HttpPost]
         public IActionResult Save(AddCartVM model)
@@ -26,36 +28,30 @@ namespace WebAppStore.Controllers
           
 
             cartRepository.Insert(model);
-            TempData["SuccessMessage"] = "Product added to cart successfully!";
+          
  
 
-            return RedirectToAction("Index","Product");
+            return Ok("Product added to cart successfully!");
 
            
         }
 
-
-        public IActionResult Edit(int id)
-        {
-           
-            return View(cartRepository.GetById(id));
-        }
-        [HttpPost]
+        [HttpPut("{id:int}")]
         public IActionResult Update(int id,AddCartVM model)
         {
             string UserId = model.UserId;
             cartRepository.Edit(id,model);
            
-            return RedirectToAction("Index", new { id = UserId });
+            return Ok("Cart Updated successfully!");
         }
 
 
-        public IActionResult Delete(int id)
-        {
-           string UserId = cartRepository.Delete(id);
-            return RedirectToAction("Index", new { id = UserId });
+        //public IActionResult Delete(int id)
+        //{
+        //   string UserId = cartRepository.Delete(id);
+        //    return RedirectToAction("Index", new { id = UserId });
 
-        }
+        //}
 
     }
 }

@@ -20,12 +20,16 @@ namespace WebAppStore.Controllers
             CategoryRepository = _CategoryRepo;
         }
 
+       
         [HttpGet]
         public IActionResult GetAllProducts()
         {
 
             return Ok(ProductRepository.GetAll());
         }
+       
+        
+       
         [HttpGet("{searchTerm}")]
         public IActionResult Search(string searchTerm)
         {
@@ -36,8 +40,10 @@ namespace WebAppStore.Controllers
             // Pass the filtered products to the Index view
             return Ok(filteredProducts);
         }
+
+
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add( AddProductDTO model)
         {
             if (ModelState.IsValid) 
@@ -53,15 +59,19 @@ namespace WebAppStore.Controllers
 
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Update(int id, AddProductDTO item)
         {
             ProductRepository.Edit(id, item);
             return Ok("Product updated  successfully!");
         
         }
+
+
+
+
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             ProductRepository.Delete(id);

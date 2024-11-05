@@ -26,6 +26,9 @@ namespace WebAppStore.Controllers
             this.userManager = userManager;
             this.configuration = configuration;
         }
+        
+        
+        
         //api/Account/Register
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterUserDTO UserRegister)
@@ -50,6 +53,9 @@ namespace WebAppStore.Controllers
             return BadRequest(ModelState);
         }
 
+       
+        
+        
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginDTO UserLogin)
         {
@@ -104,6 +110,55 @@ namespace WebAppStore.Controllers
             }
             return BadRequest(ModelState);
 
+        }
+
+       
+        
+        
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Users()
+        {
+List<UserDetailsDTO> Users = new List<UserDetailsDTO>();
+            var users = await userManager.Users.ToListAsync();
+            foreach(var user in users)
+            {
+                UserDetailsDTO UserDetails = new UserDetailsDTO();
+                UserDetails.Id = user.Id;
+                UserDetails.Name = user.Name;
+                UserDetails.Email = user.Email;
+                Users.Add(UserDetails);
+            }
+            return Ok(Users);
+        }
+
+
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return BadRequest("User not found"); // User not found
+            }
+
+
+            var result = await userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok("User Deleted Successfully!");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+          
+            return BadRequest(ModelState);
         }
     }
 }
