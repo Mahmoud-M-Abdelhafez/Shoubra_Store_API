@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using WebAppStore.DTO;
 using WebAppStore.Interfaces;
 using WebAppStore.Models;
 using WebAppStore.ViewModels;
@@ -15,19 +17,24 @@ namespace WebAppStore.Controllers
         {
             cartRepository = _CartRepo;
         }
-        [HttpGet("{id}")]
-        public IActionResult Index(string id)
+        [HttpGet]
+        [Authorize]
+        public IActionResult Index()
         {
-            
-            return Ok(cartRepository.GetAll(id));
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Ok(cartRepository.GetAll(userId));
         }
         [HttpPost]
-        public IActionResult Save(AddCartVM model)
+        [Authorize]
+        public IActionResult Save(FromUserCartDTO model)
         {
 
-          
-
-            cartRepository.Insert(model);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            AddCartDTO addCartDTO = new AddCartDTO();
+            addCartDTO.Userid = userId;
+            addCartDTO.Qty= model.Qty;
+            addCartDTO.ProductId = model.ProductId;
+            cartRepository.Insert(addCartDTO);
           
  
 

@@ -1,4 +1,5 @@
 ﻿using WebAppStore.Data;
+using WebAppStore.DTO;
 using WebAppStore.Interfaces;
 using WebAppStore.Models;
 using WebAppStore.ViewModels;
@@ -35,14 +36,14 @@ namespace WebAppStore.Repository
             return cartDetailsVM;
         }
 
-        public void Insert(AddCartVM item)
+        public void Insert(AddCartDTO item)
         {
 
-            int prodid = item.ProductId;
+            
             var cart = new Cart
             {
-                UserId = item.UserId,
-                ProductId = prodid,
+                UserId = item.Userid,
+                ProductId = item.ProductId,
                 Qty = item.Qty,
             };
 
